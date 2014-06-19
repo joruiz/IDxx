@@ -1,21 +1,36 @@
+/*
+  ReadTagId
+  Read a tag id from IDxx reader.
+ 
+  This example code is in the public domain.
+*/
+
 #include <IDxx.h>
 
-IDxx id12;
+// update serial number if it uses a hardware serial
+#define ReaderSerial Serial
+// uncomment next line and comment before if it uses software serial
+//SoftwareSerial ReaderSerial(2,3);
+
+IDxx idxx;
 
 void setup() {
 
   Serial.begin(9600);
-  
-  Serial3.begin(9600);
-  id12.begin(&Serial3);
+
+  //init RFID reader object  
+  ReaderSerial.begin(9600);
+  idxx.begin(&ReaderSerial);
 }
 
 void loop() {
   
-  String tagId = id12.readTagId();
+  String tagId = idxx.readTagId();
   if (tagId.equals(""))
-    Serial.println("No he leido tag");
-  else
+    Serial.println("No tag presented");
+  else {
+    Serial.print("Tag read: ");
     Serial.println(tagId);
-  delay(500);
+  }
+  delay(1000);
 }
